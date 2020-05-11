@@ -14,3 +14,10 @@ func IsDivisibleByFive(number int) bool {
 	}
 	return false
 }
+
+func IsDivisibleByFifteen(number int) bool {
+	if number%15 == 0 {
+		return true
+	}
+	return false
+}

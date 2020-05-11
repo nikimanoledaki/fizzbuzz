@@ -21,5 +21,11 @@ var _ = Describe("Fizzbuzz", func() {
 		It("is not divisible by 5", func() {
 			Expect(fizzbuzz.IsDivisibleByFive(4)).To(BeFalse())
 		})
+		It("is divisible by 15", func() {
+			Expect(fizzbuzz.IsDivisibleByFifteen(15)).To(BeTrue())
+		})
+		It("is not divisible by 15", func() {
+			Expect(fizzbuzz.IsDivisibleByFifteen(14)).To(BeFalse())
+		})
 	})
 })
