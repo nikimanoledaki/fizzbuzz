@@ -28,4 +28,19 @@ var _ = Describe("Fizzbuzz", func() {
 			Expect(fizzbuzz.IsDivisibleBy(14, 15)).To(BeFalse())
 		})
 	})
+
+	Context("when playing the game, Fizzbuzz says...", func() {
+		It("'fizz' when a number is divisible by 3", func() {
+			Expect(fizzbuzz.Says(3)).To(Equal("fizz"))
+		})
+		It("'buzz' when a number is divisible by 5", func() {
+			Expect(fizzbuzz.Says(5)).To(Equal("buzz"))
+		})
+		It("'fizzbuzz' when a number is divisible by 15", func() {
+			Expect(fizzbuzz.Says(15)).To(Equal("fizzbuzz"))
+		})
+		It("returns number that is not a multiple of 3, 5, or 15", func() {
+			Expect(fizzbuzz.Says(14)).To(Equal("14"))
+		})
+	})
 })
