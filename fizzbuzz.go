@@ -7,3 +7,10 @@ func IsDivisibleByThree(number int) bool {
 	}
 	return false
 }
+
+func IsDivisibleByFive(number int) bool {
+	if number%5 == 0 {
+		return true
+	}
+	return false
+}
