@@ -10,22 +10,22 @@ import (
 var _ = Describe("Fizzbuzz", func() {
 	Context("knows when a number is", func() {
 		It("is divisible by 3", func() {
-			Expect(fizzbuzz.IsDivisibleByThree(3)).To(BeTrue())
+			Expect(fizzbuzz.IsDivisibleBy(3, 3)).To(BeTrue())
 		})
 		It("is not divisible by 3", func() {
-			Expect(fizzbuzz.IsDivisibleByThree(1)).To(BeFalse())
+			Expect(fizzbuzz.IsDivisibleBy(1, 3)).To(BeFalse())
 		})
 		It("is divisible by 5", func() {
-			Expect(fizzbuzz.IsDivisibleByFive(5)).To(BeTrue())
+			Expect(fizzbuzz.IsDivisibleBy(5, 5)).To(BeTrue())
 		})
 		It("is not divisible by 5", func() {
-			Expect(fizzbuzz.IsDivisibleByFive(4)).To(BeFalse())
+			Expect(fizzbuzz.IsDivisibleBy(4, 5)).To(BeFalse())
 		})
 		It("is divisible by 15", func() {
-			Expect(fizzbuzz.IsDivisibleByFifteen(15)).To(BeTrue())
+			Expect(fizzbuzz.IsDivisibleBy(15, 15)).To(BeTrue())
 		})
 		It("is not divisible by 15", func() {
-			Expect(fizzbuzz.IsDivisibleByFifteen(14)).To(BeFalse())
+			Expect(fizzbuzz.IsDivisibleBy(14, 15)).To(BeFalse())
 		})
 	})
 })
