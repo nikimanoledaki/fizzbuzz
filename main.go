@@ -1,7 +1,15 @@
 package main
 
-import "fmt"
+import (
+	"fmt"
+	"os"
+	"strconv"
+
+	"github.com/nikimanoledaki/fizzbuzz/pkg/fizzbuzz"
+)
 
 func main() {
-	fmt.Println("fizz")
+	numberAsString := os.Args[1]
+	number, _ := strconv.Atoi(numberAsString)
+	fmt.Println(fizzbuzz.Says(number))
 }

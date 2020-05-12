@@ -29,11 +29,14 @@ var _ = Describe("Integration", func() {
 
 	It("when the command line argument is 3, it prints 'fizz'", func() {
 		fizzbuzzCommand = exec.Command(fizzbuzzBinary, "3")
-
 		session, err := gexec.Start(fizzbuzzCommand, GinkgoWriter, GinkgoWriter)
-
 		Expect(err).NotTo(HaveOccurred())
-
 		Eventually(session.Out).Should(gbytes.Say("fizz\n"))
+	})
+	It("when the command line argument is 5, it prints 'buzz'", func() {
+		fizzbuzzCommand = exec.Command(fizzbuzzBinary, "5")
+		session, err := gexec.Start(fizzbuzzCommand, GinkgoWriter, GinkgoWriter)
+		Expect(err).NotTo(HaveOccurred())
+		Eventually(session.Out).Should(gbytes.Say("buzz\n"))
 	})
 })
