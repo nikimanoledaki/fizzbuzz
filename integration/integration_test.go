@@ -52,4 +52,11 @@ var _ = Describe("Integration", func() {
 		Expect(err).NotTo(HaveOccurred())
 		Eventually(session.Out).Should(gbytes.Say("1\n2\nfizz\n4\nbuzz\n"))
 	})
+	It("when there are no arguments at all, it returns instructions", func() {
+		args := []string{}
+		fizzbuzzCommand = exec.Command(fizzbuzzBinary, args...)
+		session, err := gexec.Start(fizzbuzzCommand, GinkgoWriter, GinkgoWriter)
+		Expect(err).NotTo(HaveOccurred())
+		Eventually(session.Out).Should(gbytes.Say("usage: fizzbuzz <number> \\[<number> <number> ...\\]\n"))
+	})
 })
