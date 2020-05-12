@@ -12,14 +12,17 @@ import (
 
 var _ = Describe("Integration", func() {
 	var (
-		fizzbuzzBinary  string
 		fizzbuzzCommand *exec.Cmd
+		fizzbuzzBinary  string
+		fizzbuzzArgs    []string
+		session         *gexec.Session
 	)
 
-	BeforeEach(func() {
+	JustBeforeEach(func() {
 		var err error
-
 		fizzbuzzBinary, err = gexec.Build("github.com/nikimanoledaki/fizzbuzz", "-mod=vendor")
+		fizzbuzzCommand = exec.Command(fizzbuzzBinary, fizzbuzzArgs...)
+		session, err = gexec.Start(fizzbuzzCommand, GinkgoWriter, GinkgoWriter)
 		Expect(err).NotTo(HaveOccurred())
 	})
 
@@ -27,36 +30,43 @@ var _ = Describe("Integration", func() {
 		gexec.CleanupBuildArtifacts()
 	})
 
-	It("when the command line argument is 3, it prints 'fizz'", func() {
-		fizzbuzzCommand = exec.Command(fizzbuzzBinary, "3")
-		session, err := gexec.Start(fizzbuzzCommand, GinkgoWriter, GinkgoWriter)
-		Expect(err).NotTo(HaveOccurred())
-		Eventually(session.Out).Should(gbytes.Say("fizz\n"))
+	Context("when a comman line argument is received", func() {
+		BeforeEach(func() {
+			fizzbuzzArgs = []string{"3"}
+		})
+
+		It("prints the results", func() {
+			Eventually(session.Out).Should(gbytes.Say("fizz\n"))
+		})
 	})
-	It("when the command line argument is 5, it prints 'buzz'", func() {
-		fizzbuzzCommand = exec.Command(fizzbuzzBinary, "5")
-		session, err := gexec.Start(fizzbuzzCommand, GinkgoWriter, GinkgoWriter)
-		Expect(err).NotTo(HaveOccurred())
-		Eventually(session.Out).Should(gbytes.Say("buzz\n"))
+
+	Context("when several command line arguments are received", func() {
+		BeforeEach(func() {
+			fizzbuzzArgs = []string{"1", "2", "3", "4", "5"}
+		})
+
+		It("processes them all", func() {
+			Eventually(session.Out).Should(gbytes.Say("1\n2\nfizz\n4\nbuzz\n"))
+		})
 	})
-	It("when the command line argument is not a number, it prints an erorr", func() {
-		fizzbuzzCommand = exec.Command(fizzbuzzBinary, "!")
-		session, err := gexec.Start(fizzbuzzCommand, GinkgoWriter, GinkgoWriter)
-		Expect(err).NotTo(HaveOccurred())
-		Eventually(session.Out).Should(gbytes.Say("arguments must be numbers\n"))
+
+	Context("when the command line argument is not a number", func() {
+		BeforeEach(func() {
+			fizzbuzzArgs = []string{"!"}
+		})
+
+		It("it prints an erorr", func() {
+			Eventually(session.Out).Should(gbytes.Say("arguments must be numbers\n"))
+		})
 	})
-	It("when there are several command line arguments, it processes them all", func() {
-		args := []string{"1", "2", "3", "4", "5"}
-		fizzbuzzCommand = exec.Command(fizzbuzzBinary, args...)
-		session, err := gexec.Start(fizzbuzzCommand, GinkgoWriter, GinkgoWriter)
-		Expect(err).NotTo(HaveOccurred())
-		Eventually(session.Out).Should(gbytes.Say("1\n2\nfizz\n4\nbuzz\n"))
-	})
-	It("when there are no arguments at all, it returns instructions", func() {
-		args := []string{}
-		fizzbuzzCommand = exec.Command(fizzbuzzBinary, args...)
-		session, err := gexec.Start(fizzbuzzCommand, GinkgoWriter, GinkgoWriter)
-		Expect(err).NotTo(HaveOccurred())
-		Eventually(session.Out).Should(gbytes.Say("usage: fizzbuzz <number> \\[<number> <number> ...\\]\n"))
+
+	Context("when there are no arguments at all", func() {
+		BeforeEach(func() {
+			fizzbuzzArgs = []string{}
+		})
+
+		It("it returns instructions", func() {
+			Eventually(session.Out).Should(gbytes.Say("usage: fizzbuzz <number> \\[<number> <number> ...\\]\n"))
+		})
 	})
 })
