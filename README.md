@@ -1,6 +1,6 @@
 # Fizzbuzz with Go
 
-## Get started
+## Get started
 ```
 git clone https://github.com/nikimanoledaki/fizzbuzz.git
 ```
